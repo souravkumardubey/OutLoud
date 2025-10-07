@@ -37,9 +37,8 @@ export const updateUserAction = async ({
       { upsert: true }
     );
 
-    if (path === "/profile/edit") {
-      revalidatePath(path);
-    }
+    if (path === "/profile/edit") revalidatePath(path);
+    
   } catch (error: any) {
     throw new Error("Failed to create/update user: " + error.message);
   }
