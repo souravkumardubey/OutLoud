@@ -18,7 +18,7 @@ export const createThreadAction = async ({
   communityId,
   path
 }: Params) => {
-  connectToDB();
+  await connectToDB();
 
   try {
     const createdThread = await Thread.create({
