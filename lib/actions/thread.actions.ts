@@ -18,9 +18,11 @@ export const createThreadAction = async ({
   communityId,
   path
 }: Params) => {
-  await connectToDB();
-
+  
   try {
+
+    await connectToDB();
+
     const createdThread = await Thread.create({
       text,
       author,
@@ -40,6 +42,7 @@ export const createThreadAction = async ({
 
 export const fetchThreads = async (pageNumber: 1, pageSize: 20) => {
 
+  await connectToDB();
   const skip = (pageNumber - 1) * pageSize;
 
   const postQuery = Thread.find({
@@ -73,4 +76,76 @@ export const fetchThreads = async (pageNumber: 1, pageSize: 20) => {
   const isNext = totalPostsCount > (skip + posts.length);
 
   return { posts, isNext };
+}
+
+export const fetchThreadById = async (id: string) => {
+
+  try {
+    
+    await connectToDB();
+    // multi-level commenting functionality
+    const thread = await Thread.findById(id)
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id id name image"
+      })
+      .populate({
+        path: "children",
+        populate: [
+          {
+            path: "author",
+            model: User,
+            select: "_id id name parentId image"
+          },
+          {
+            path: "children",
+            model: Thread,
+            populate: {
+              path: "author",
+              model: User,
+              select: "_id id name parentId image"
+            }
+          }
+        ]
+      }).exec();
+
+      return thread;
+  } catch (error: any) {
+    throw new Error(`Error fetching thread: ${error.message}`)
+  }
+}
+
+export const addCommentToThread = async (
+  threadId: string,
+  commentText: string,
+  userId: string,
+  path: string,
+) => {
+
+  await connectToDB();
+
+  console.log("Add comment")
+  try {
+    
+    const parentThread = await Thread.findById(threadId);
+    if (!parentThread) throw new Error("Thread not found.");
+
+    const commentThread = new Thread({
+      text: commentText,
+      author: userId,
+      parentId: threadId
+    });
+
+    const saveCommentToThread = await commentThread.save();
+
+    parentThread.children.push(saveCommentToThread._id);
+    await parentThread.save();
+
+    revalidatePath(path);
+
+  } catch (error: any) {
+    console.error("Error while adding comment: ", error.message);
+    throw new Error(`Error adding comment to thread: ${error.message}`)
+  }
 }
