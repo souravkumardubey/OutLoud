@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import { text } from "stream/consumers";
-import { string } from "zod";
 
 const threadSchema = new mongoose.Schema({
   text: { type: String, required: true },
@@ -18,7 +16,7 @@ const threadSchema = new mongoose.Schema({
     default: Date.now
   },
   parentId: {
-    type: string,
+    type: String,
   },
   children: [{
     type: mongoose.Schema.Types.ObjectId,
