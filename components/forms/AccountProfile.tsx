@@ -59,11 +59,19 @@ const AccountProfile = ({user, btnTitle}: Props) => {
 
     if (e.target.files && e.target.files?.length) {
       const file = e.target.files[0];
-      setFiles(Array.from(e.target.files));
+      
+      // Check file size - 50KB = 50 * 1024 bytes
+      if (file.size > 50 * 1024) {
+        alert("File size should be less than 50KB");
+        e.target.value = ''; // Reset the input
+        return;
+      }
 
       if (!file.type.includes("image")) {
         return;
       }
+
+      setFiles(Array.from(e.target.files));
 
       fileReader.onload = async (event) => {
         const image = event.target?.result?.toString() || "";
