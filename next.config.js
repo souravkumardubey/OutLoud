@@ -22,10 +22,15 @@ const nextConfig = {
         protocol: "https",
         hostname: "placehold.co",
       },
+      {
+        protocol: "https",
+        hostname: "utfs.io", // ✅ Allow images from utfs.io
+        pathname: "/**", // ✅ Match any image path (e.g. /f/... etc.)
+      },
     ],
-    typescript: {
-      ignoreBuildErrors: true,
-    },
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
 };
 
