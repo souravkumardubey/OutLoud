@@ -7,8 +7,8 @@ Users can post thoughts, comment, and interact within communities — all with a
 
 ## 🚀 Overview
 
-Threads Clone is a community-driven web application that allows users to:
-- Create and share posts (threads)
+Outloud is a community-driven web application that allows users to:
+- Create and share posts
 - Join or create communities
 - Engage in nested conversations
 - Receive real-time notifications  
@@ -53,8 +53,8 @@ Ensure you have the following installed:
 
 ### 2️⃣ Clone the Repository
 ```bash
-git clone https://github.com/<your-username>/threads-clone.git
-cd threads-clone
+git clone https://github.com/souravkumardubey/OutLoud.git
+cd Outloud
 ```
 
 ### 3️⃣ Install Dependencies
@@ -100,7 +100,7 @@ Now visit http://localhost:3000
 
 ### 📂 Folder Structure
 ```php
-threads-clone/
+outloud/
 │
 ├── app/                # Next.js app router pages & layouts
 ├── components/         # Reusable UI and layout components
